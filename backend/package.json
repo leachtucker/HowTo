@@ -1,0 +1,29 @@
+{
+  "name": "howto-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leachtucker/HowTo.git"
+  },
+  "author": "Tucker Leach",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leachtucker/HowTo/issues"
+  },
+  "homepage": "https://github.com/leachtucker/HowTo#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.3.1",
+    "knex": "^0.21.15",
+    "sqlite3": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
