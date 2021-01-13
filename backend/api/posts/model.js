@@ -40,7 +40,7 @@ async function updatePost (id, changes) {
     return Promise.resolve(updatedPost);
 }
 
-// NEEDS TESTED
+// NEEDS TESTED //
 function findPostsByUserId (id) {
     return db('posts').where('user_id', id);
 }
