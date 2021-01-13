@@ -81,6 +81,37 @@ router.get('/user/:id', (req, res) => {
         })
 });
 
-// ADD END POINTS UTILIZING findPostsByUserId, findStepsByPostId, insertStepByPostId
+router.get('/:id/steps', (req, res) => {
+    const { id } = req.params;
+
+    Posts.findStepsByPostId(id)
+        .then(results => {
+            if (!results) {
+                return res.status(404).json({ message: "No post found with specified ID" });
+            }
+
+            res.status(200).json(results);
+        })
+        .catch(() => {
+            res.status(500);
+        })
+});
+
+router.post('/:id/steps', (req, res) => {
+    const  { id } = req.params;
+    const stepData = req.body;
+
+    Posts.insertStepByPostId(id, stepData)
+        .then(newStep => {
+            if (!newStep) {
+                return res.status(404);
+            }
+
+            res.status(201).json(newStep);
+        })
+        .catch(() => {
+            res.status(500);
+        })
+});
 
 module.exports = router;
