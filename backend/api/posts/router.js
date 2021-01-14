@@ -3,10 +3,6 @@ const Posts = require('./model');
 
 const router = express.Router();
 
-const authMiddleware = require('../auth/authMiddleware');
-
-router.use(authMiddleware());
-
 // END POINTS //
 router.get('/', (req, res) => {
     Posts.getPosts()

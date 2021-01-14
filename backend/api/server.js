@@ -2,6 +2,8 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 
+const authMiddleware = require('./auth/authMiddleware');
+
 // IMPORT ROUTERS //
 const authRouter = require('./auth/router');
 const postsRouter = require('./posts/router');
@@ -12,6 +14,7 @@ const server = express();
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
+server.use(authMiddleware());
 
 // ROUTERS //
 server.use('/api/auth', authRouter);

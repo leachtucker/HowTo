@@ -1,8 +1,14 @@
 const jwt = require('jsonwebtoken');
 
+// Validates user's JWT if they are not on an login/register path
 function validateToken () {
     return function (req, res, next) {
         const token = req.headers.authorization;
+
+        // Verify that the user is not on a login/register path
+        if (req.path === '/api/auth/login' || req.path === 'api/auth/register') {
+            return next();
+        }
 
         if (!token) {
             return res.status(400).json({

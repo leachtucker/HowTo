@@ -6,9 +6,6 @@ const Users = require('./users-model');
 
 const router = express.Router();
 
-const authMiddleware = require('./authMiddleware');
-const validateToken = require('./authMiddleware');
-
 router.post('/register', validateCredentials(), (req, res) => {
     const { username, password } = req.credentials;
 
@@ -45,7 +42,7 @@ router.post('/login', validateCredentials(), (req, res) => {
         })
 })
 
-router.get('/user', validateToken(), (req, res) => {
+router.get('/user', (req, res) => {
     const { username } = req;
 
     Users.findUserByUsername(username)
