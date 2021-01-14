@@ -1,4 +1,5 @@
 const express = require('express');
+const { post } = require('../auth/router');
 const Posts = require('./model');
 
 const router = express.Router();
@@ -17,6 +18,13 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const postData = req.body;
 
+    // Validate postData
+    if (!postData.title || !postData.description || !postData.user_id) {
+        return res.status(401).json({
+            message: "Missing required field. Required fields: {title, description, user_id}"
+        })
+    }
+
     Posts.insertPost(postData)
         .then(newPost => {
             res.status(201).json(newPost);
@@ -29,6 +37,13 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     const { id } = req.params;
     const changes = req.body;
+
+    // Validate changes
+    if (!changes) {
+        return res.status(400).json({
+            message: "Request body empty"
+        })
+    }
 
     Posts.updatePost(id, changes)
         .then(updatedPost => {
@@ -47,7 +62,9 @@ router.delete('/:id', (req, res) => {
             if (deleted) {
                 res.status(200).json({ message: "Post deleted" });
             } else {
-                res.status(404).json();
+                res.status(404).json({
+                    message: "No post with specified ID found"
+                });
             }
         })
         .catch(() => {
@@ -57,11 +74,15 @@ router.delete('/:id', (req, res) => {
 
 router.get('/:id', (req, res) => {
     const { id } = req.params;
+
     Posts.findById(id)
         .then(result => {
             if (!result) {
-                res.status(404);
+                return res.status(404).json({
+                    message: "No post with specified ID found"
+                });
             }
+
             res.status(200).json(result);
         })
         .catch(() => {
@@ -100,6 +121,12 @@ router.get('/:id/steps', (req, res) => {
 router.post('/:id/steps', (req, res) => {
     const  { id } = req.params;
     const stepData = req.body;
+
+    if (!stepData.stepName || !stepData.stepNumber || !stepData.post_id) {
+        return res.status(400).json({
+            message: "Missing required field. Required fields: {stepName, stepNumber, post_id}"
+        })
+    }
 
     Posts.insertStepByPostId(id, stepData)
         .then(newStep => {
