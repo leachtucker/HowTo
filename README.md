@@ -11,7 +11,7 @@ Deployed URL
 | -------- | ------ |--------------|-------------------------------------|
 | /api/auth/register | POST | username, password | NO |
 | /api/auth/login | POST | username, password | NO |
-| /api/auth/users | GET | | YES |
+| /api/auth/user | GET | | YES |
 | /api/posts | GET |  | YES |
 | /api/posts | POST | title, description | YES |
 | /api/posts | POST | title, description | YES |
