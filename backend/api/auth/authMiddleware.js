@@ -6,7 +6,7 @@ function validateToken () {
         const token = req.headers.authorization;
 
         // Verify that the user is not on a login/register path
-        if (req.path === '/api/auth/login' || req.path === 'api/auth/register') {
+        if (req.path === '/api/auth/login' || req.path === '/api/auth/register') {
             return next();
         }
 
