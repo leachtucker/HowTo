@@ -26,8 +26,8 @@ Deployed URL https://howtoapi.herokuapp.com/
 |------|------|----------|
 | title | String | Yes |
 | description | String | Yes |
-| materials | String | Yes |
-| video | String (url) | Yes |
+| materials | String | No |
+| video | String (url) | No |
 | instruction | String | No |
 
 #### Schema for /api/posts/:id/steps
