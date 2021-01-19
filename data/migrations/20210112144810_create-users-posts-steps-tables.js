@@ -17,7 +17,8 @@ exports.up = function(knex) {
                 .unique()
                 .index();
             table.string('description', 256).notNullable();
-            table.string('materials', 256);
+            table.string('materials', 256)
+                .notNullable();
             table.string('video');
             table.string('instructions');
 
@@ -32,8 +33,10 @@ exports.up = function(knex) {
         })
         .createTable('steps', table => {
             table.increments('step_id');
-            table.string('stepName', 256);
-            table.string('stepNumber', 256);
+            table.string('stepName', 256)
+                .notNullable();
+            table.string('stepNumber', 256)
+                .notNullable();
 
             // Foreign key
             table.integer('post_id')
