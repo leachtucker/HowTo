@@ -12,6 +12,21 @@ router.post('/register', validateCredentials(), (req, res) => {
     const rounds = process.env.BCRYPT_ROUNDS || 14;
     const passwordHash = bcrypt.hashSync(password, rounds);
 
+    // Check that no user already has this username
+    Users.findUserByUsername(username)
+        .then(result => {
+            if (result) {
+                return res.status(400).json({
+                    message: "Username taken. Choose another"
+                })
+            }
+        })
+        .catch(() => {
+            return res.status(500).json({
+                message: "An internal error occurred..."
+            })
+        })
+    // Insert user
     Users.insertUser({ username, password: passwordHash })
         .then(newUser => {
             res.status(201).json(newUser);
@@ -41,27 +56,6 @@ router.post('/login', validateCredentials(), (req, res) => {
             })
         })
 })
-
-router.get('/user', (req, res) => {
-    const { username } = req;
-
-    Users.findUserByUsername(username)
-        .then(user => {
-            if (!user) {
-                return res.status(500).json({
-                    message: "An error has occured"
-                })
-            }
-
-            const { username, user_id } = user;
-
-            res.status(200).json({
-                user_id,
-                username
-            });
-        })
-
-});
 
 router.get('/whoami', (req, res) => {
     const token = req.headers.authorization;
