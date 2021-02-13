@@ -63,6 +63,19 @@ router.get('/user', (req, res) => {
 
 });
 
+router.get('/whoami', (req, res) => {
+    const token = req.headers.authorization;
+    jwt.verify(token, process.env.JWT_SECRET || 'keep it secret, keep it safe', (err, decoded) => {
+        if (err) {
+            return res.status(400).json({
+                message: "Invalid token. Login to generate new token"
+            })
+        }
+
+        return res.status(200).json(decoded);
+    })
+})
+
 // MIDDLEWARE //
 function validateCredentials() {
     return function (req, res, next) {
