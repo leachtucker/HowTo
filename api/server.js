@@ -7,6 +7,7 @@ const authMiddleware = require('./auth/authMiddleware');
 // IMPORT ROUTERS //
 const authRouter = require('./auth/router');
 const postsRouter = require('./posts/router');
+const stepsRouter = require('./steps/router');
 
 const server = express();
 
@@ -19,6 +20,7 @@ server.use(authMiddleware());
 // ROUTERS //
 server.use('/api/auth', authRouter);
 server.use('/api/posts', postsRouter);
+server.use('/api/steps', stepsRouter);
 
 // TEST ENDPOINT
 server.get('/', (req, res) => {
