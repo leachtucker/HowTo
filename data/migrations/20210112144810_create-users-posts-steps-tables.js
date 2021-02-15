@@ -35,7 +35,7 @@ exports.up = function(knex) {
             table.increments('step_id');
             table.string('stepName', 256)
                 .notNullable();
-            table.string('stepNumber', 256)
+            table.integer('stepNumber')
                 .notNullable();
 
             // Foreign key
@@ -46,6 +46,25 @@ exports.up = function(knex) {
                 .inTable('posts')
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
+        })
+        .createTable('likes', table => {
+            table.increments('like_id').index();
+            table.integer('user_id')
+                .notNullable()
+                .references('user_id')
+                .inTable('users')
+                .onUpdate('CASCADE')
+                .onDelete('CASCADE');
+            table.integer('post_id')
+                .notNullable()
+                .references('post_id')
+                .inTable('posts')
+                .onUpdate('CASCADE')
+                .onDelete('CASCADE');
+
+            // MISC INFO about the like -- perhaps when created
+            table.timestamp('created_at')
+                .defaultTo(knex.fn.now());
         })
 };
 
