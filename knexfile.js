@@ -1,5 +1,7 @@
 // Update with your config settings.
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 module.exports = {
   development: {
@@ -33,21 +35,17 @@ module.exports = {
   },
   production: {
     client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
+    connection: process.env.DATABASE_URL,
+    useNullAsDefault: true,
     pool: {
       min: 2,
-      max: 10,
-      afterCreate: (conn, cb) => {
-        conn.run('PRAGMA foreign_keys = ON', cb)
-      }
+      max: 10
     },
     migrations: {
-      tableName: 'knex_migrations'
+      directory: "./data/migrations"
+    },
+    seeds: {
+      directory: "./data/seeds"
     }
   }
-
 };
