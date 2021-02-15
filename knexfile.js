@@ -35,17 +35,17 @@ module.exports = {
   },
   production: {
     client: 'postgresql',
-    connection: process.env.DATABASE_URL,
+    connection: `${process.env.DATABASE_URL}/sslmode=require`,
     useNullAsDefault: true,
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
-      directory: "./data/migrations"
+      directory: __dirname + "/data/migrations"
     },
     seeds: {
-      directory: "./data/seeds"
+      directory: __dirname + "/data/seeds"
     }
   }
 };
