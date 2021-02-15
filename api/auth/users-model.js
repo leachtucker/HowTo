@@ -6,7 +6,7 @@ function getUsers () {
 }
 
 async function insertUser (userData) {
-    const [ newUserId ] = await db('users').insert(userData);
+    const [ newUserId ] = await db('users').insert(userData).returning('user_id');
 
     if (!newUserId) {
         return Promise.resolve(null);
@@ -24,8 +24,8 @@ function findUserByUsername(username) {
 
 function findUserById (id) {
     return db('users')
-    .where('user_id', id)
-    .first();
+        .where('user_id', id)
+        .first();
 }
 
 

@@ -10,7 +10,11 @@ function getPosts () {
 }
 
 async function insertPost (postData) {
-    const [ newPostId ] = await db('posts').insert(postData);
+    const [ newPostId ] = await db('posts').insert(postData).returning('post_id');
+
+    if(!newPostId) {
+        return Promise.reject(null);
+    }
 
     const newPost = await findById(newPostId);
 
@@ -50,7 +54,7 @@ function findStepsByPostId (id) {
 }
 
 async function insertStepByPostId (id, stepData) {
-    const [ newStepId ] = await db('steps').insert({ ...stepData, post_id: id });
+    const [ newStepId ] = await db('steps').insert({ ...stepData, post_id: id }).returning('step_id');
 
     if (!newStepId) {
         return Promise.resolve(null);
@@ -60,8 +64,6 @@ async function insertStepByPostId (id, stepData) {
 
     return Promise.resolve(newStep);
 }
-
-// END of NEEDS TESTED //
 
 module.exports = {
     findById,

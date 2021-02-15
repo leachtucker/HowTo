@@ -117,27 +117,4 @@ router.get('/:id/steps', (req, res) => {
         })
 });
 
-router.post('/:id/steps', (req, res) => {
-    const  { id } = req.params;
-    const stepData = req.body;
-
-    if (!stepData.stepName || !stepData.stepNumber || !stepData.post_id) {
-        return res.status(400).json({
-            message: "Missing required field. Required fields: {stepName, stepNumber, post_id}"
-        })
-    }
-
-    Posts.insertStepByPostId(id, stepData)
-        .then(newStep => {
-            if (!newStep) {
-                return res.status(404);
-            }
-
-            res.status(201).json(newStep);
-        })
-        .catch(() => {
-            res.status(500);
-        })
-});
-
 module.exports = router;

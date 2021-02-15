@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/register', validateCredentials(), (req, res) => {
     const { username, password } = req.credentials;
 
-    const rounds = process.env.BCRYPT_ROUNDS || 14;
+    const rounds = parseInt(process.env.BCRYPT_ROUNDS) || 14;
     const passwordHash = bcrypt.hashSync(password, rounds);
 
     // Check that no user already has this username
