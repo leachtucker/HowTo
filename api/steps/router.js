@@ -13,14 +13,26 @@ router.get('/', (req, res) => {
         })
 })
 
-router.post('', (req, res) => {
+router.post('/', (req, res) => {
     const stepData = req.body;
 
-    if (!stepData.stepName || !stepData.stepNumber || !stepData.post_id) {
+    if (!stepData.step_name || !stepData.step_number || !stepData.post_id) {
         return res.status(400).json({
             message: "Missing required field. Required fields: {stepName, stepNumber, post_id}"
         })
     }
+
+    Steps.findByStepPost(stepData.step_number, stepData.post_id)
+        .then(result => {
+            if (result) {
+                return res.status(400).json({
+                    message: "A step with that number already exits for this post"
+                })
+            }
+        })
+        .catch(() => {
+            res.status(500)
+        })
 
     Steps.insert(stepData)
         .then(newStep => {

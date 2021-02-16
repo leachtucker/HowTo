@@ -9,6 +9,11 @@ function findById(step_id) {
     return db('steps').where({ step_id }).first();
 }
 
+// Returns step with the provided step_number and post_id
+function findByStepPost(step_number, post_id) {
+    return db('steps').where({ step_number, post_id }).first();
+}
+
 async function insert(stepData) {
     const [ newStepId ] = await db('steps').insert(stepData).returning('step_id');
 
@@ -36,6 +41,7 @@ async function update(step_id, changes) {
 module.exports = {
     get,
     findById,
+    findByStepPost,
     insert,
     update
 }

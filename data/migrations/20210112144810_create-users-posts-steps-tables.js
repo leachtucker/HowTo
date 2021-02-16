@@ -2,7 +2,7 @@
 exports.up = function(knex) {
     return knex.schema
         .createTable('users', table => {
-            table.increments('user_id');
+            table.increments('user_id').index();
             table.string('username', 20)
                 .notNullable()
                 .unique()
@@ -11,7 +11,7 @@ exports.up = function(knex) {
                 .notNullable();
         })
         .createTable('posts', table => {
-            table.increments('post_id');
+            table.increments('post_id').index();
             table.string('title', 128)
                 .notNullable()
                 .unique()
@@ -32,10 +32,10 @@ exports.up = function(knex) {
                 .onDelete('CASCADE');
         })
         .createTable('steps', table => {
-            table.increments('step_id');
-            table.string('stepName', 256)
+            table.increments('step_id').index();
+            table.string('step_name', 256)
                 .notNullable();
-            table.integer('stepNumber')
+            table.integer('step_number')
                 .notNullable();
 
             // Foreign key
@@ -46,6 +46,8 @@ exports.up = function(knex) {
                 .inTable('posts')
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
+
+            table.unique(['post_id', 'step_number']);
         })
         .createTable('likes', table => {
             table.increments('like_id').index();
@@ -61,6 +63,8 @@ exports.up = function(knex) {
                 .inTable('posts')
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
+
+            table.unique(['user_id', 'post_id']);
 
             // MISC INFO about the like -- perhaps when created
             table.timestamp('created_at')
