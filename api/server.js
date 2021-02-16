@@ -8,6 +8,7 @@ const authMiddleware = require('./auth/authMiddleware');
 const authRouter = require('./auth/router');
 const postsRouter = require('./posts/router');
 const stepsRouter = require('./steps/router');
+const likesRouter = require('./likes/router');
 
 const server = express();
 
@@ -21,6 +22,7 @@ server.use(authMiddleware());
 server.use('/api/auth', authRouter);
 server.use('/api/posts', postsRouter);
 server.use('/api/steps', stepsRouter);
+server.use('/api/likes', likesRouter);
 
 // TEST ENDPOINT
 server.get('/', (req, res) => {
