@@ -12,9 +12,10 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const { user_id, post_id } = req.body;
+    const { post_id } = req.body;
+    const { user_id } = req;
 
-    if(!user_id, !post_id) {
+    if(!post_id) {
         return res.status(400).json({
             message: "Missing required parameters: {user_id, post_id}"
         })
