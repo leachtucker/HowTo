@@ -8,6 +8,10 @@ function findByPostId(post_id) {
     return db('likes').where({ post_id }).first();
 }
 
+function findByUserId(user_id) {
+    return db('likes').where({ user_id });
+}
+
 function findByPostUser(post_id, user_id) {
     return db('likes').where({ post_id, user_id }).first();
 }
@@ -27,6 +31,7 @@ async function insert(post_id, user_id) {
 module.exports = {
     get,
     findByPostId,
+    findByUserId,
     findByPostUser,
     insert
 }

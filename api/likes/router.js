@@ -1,8 +1,11 @@
 const router = require('express').Router();
 const Likes = require('./model');
 
+// Responds with all the client's likes as an array. Find's client with info stored in their JWT
 router.get('/', (req, res) => {
-    Likes.get()
+    const { user_id } = req;
+
+    Likes.findByUserId(user_id)
         .then(results => {
             res.status(200).json(results);
         })
