@@ -1,8 +1,7 @@
 const db = require('../../data/dbConfig');
 
-async function findById (id) {
-    const [ post ] = await db('posts').where('post_id', id);
-    return Promise.resolve(post);
+function findById(post_id) {
+    return db('posts').where({ post_id }).first();
 }
 
 function getPosts () {
