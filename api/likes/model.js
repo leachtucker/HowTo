@@ -28,10 +28,21 @@ async function insert(post_id, user_id) {
     return Promise.resolve(newLike);
 }
 
+async function del(post_id, user_id) {
+    const delRecords = await db('likes').where({ post_id, user_id }).delete();
+
+    if (!delRecords) {
+        return Promise.resolve(false);
+    }
+
+    return Promise.resolve(true)
+}
+
 module.exports = {
     get,
     findByPostId,
     findByUserId,
     findByPostUser,
-    insert
+    insert,
+    del
 }

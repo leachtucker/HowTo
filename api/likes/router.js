@@ -64,4 +64,28 @@ router.post('/', (req, res) => {
         })
 })
 
+router.delete('/', async (req, res) => {
+    try {
+        const { post_id } = req.body;
+        const { user_id } = req;
+
+        const doesExist = await Likes.findByPostUser(post_id, user_id);
+
+        if (!doesExist) {
+            return res.status(400).json({
+                message: "Does not exist"
+            })
+        }
+
+        await Likes.del(post_id, user_id);
+
+        return res.status(200).json({
+            message: "Like removed"
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(500);
+    }
+})
+
 module.exports = router;
