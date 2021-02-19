@@ -27,8 +27,6 @@ router.post('/', (req, res) => {
         })
     }
 
-    console.log(post_id, user_id)
-
     // Check that post exists
     Posts.findById(post_id)
         .then(post => {
@@ -52,7 +50,7 @@ router.post('/', (req, res) => {
             }
         })
         .catch(() => {
-            res.status(500);
+            return res.status(500);
         })
 
     Likes.insert(post_id, user_id)
