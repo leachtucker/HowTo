@@ -50,7 +50,6 @@ exports.up = function(knex) {
             table.unique(['post_id', 'step_number']);
         })
         .createTable('likes', table => {
-            table.increments('like_id').index();
             table.integer('user_id')
                 .notNullable()
                 .references('user_id')
@@ -64,7 +63,7 @@ exports.up = function(knex) {
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
 
-            table.unique(['user_id', 'post_id']);
+            table.primary(['user_id', 'post_id']);
 
             // MISC INFO about the like -- perhaps when created
             table.timestamp('created_at')
@@ -74,7 +73,8 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
     return knex.schema
-        .dropTableIfExists('users')
+        .dropTableIfExists('steps')
+        .dropTableIfExists('likes')
         .dropTableIfExists('posts')
-        .dropTableIfExists('steps');
+        .dropTableIfExists('users');
 };

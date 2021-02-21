@@ -17,49 +17,40 @@ router.get('/', (req, res) => {
         })
 })
 
-router.post('/', (req, res) => {
-    const { post_id } = req.body;
-    const { user_id } = req;
+router.post('/', async (req, res) => {
+    try {
+        const { post_id } = req.body;
+        const { user_id } = req;
 
-    if(!post_id) {
-        return res.status(400).json({
-            message: "Missing required parameters: {user_id, post_id}"
-        })
+        if(!post_id) {
+            return res.status(400).json({
+                message: "Missing required parameters: {user_id, post_id}"
+            })
+        }
+
+        // Check that the specified post exist
+        const post = await Posts.findById(post_id);
+
+        if (!post) {
+            return res.status(400).json({
+                message: "No post with that ID"
+            })
+        }
+
+        // Check that a like doesn't already exist for that user and post -- a user can only like a post once
+        const like = await Likes.findByPostUser(post_id, user_id);
+
+        if (like) {
+            return res.status(400).json({
+                message: "Post already liked"
+            })
+        }
+
+        const newLike = await Likes.insert(post_id, user_id);
+        return res.status(201).json(newLike);
+    } catch(err) {
+        res.status(500);
     }
-
-    // Check that post exists
-    Posts.findById(post_id)
-        .then(post => {
-            if (!post) {
-                return res.status(404).json({
-                    message: "No post with that ID"
-                })
-            }
-        })
-        .catch(() => {
-            return res.status(500);
-        })
-
-    // Check that a like doesn't already exist for that user and post -- a user can only like a post once
-    Likes.findByPostUser(post_id, user_id)
-        .then(result => {
-            if (result) {
-                return res.status(400).json({
-                    message: "You can only like a post once"
-                })
-            }
-        })
-        .catch(() => {
-            return res.status(500);
-        })
-
-    Likes.insert(post_id, user_id)
-        .then(newLike => {
-            res.status(201).json(newLike);
-        })
-        .catch(() => {
-            res.status(500);
-        })
 })
 
 router.delete('/', async (req, res) => {

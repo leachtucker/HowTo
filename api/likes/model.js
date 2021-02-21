@@ -17,13 +17,13 @@ function findByPostUser(post_id, user_id) {
 }
 
 async function insert(post_id, user_id) {
-    const [ newLikeId ] = await db('likes').insert({ user_id, post_id }).returning('like_id');
+    const newLike = await db('likes').insert({ user_id: user_id, post_id: post_id }).returning('*');
 
-    if (!newLikeId) {
+    console.log(newLike)
+
+    if (!newLike) {
         Promise.reject(null);
     }
-
-    const newLike = await db('likes').where({ like_id: newLikeId });
 
     return Promise.resolve(newLike);
 }
