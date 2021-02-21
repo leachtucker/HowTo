@@ -16,15 +16,16 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const postData = req.body;
+    const { user_id } = req;
 
     // Validate postData
-    if (!postData.title || !postData.description || !postData.user_id) {
+    if (!postData.title || !postData.description || !postData.materials) {
         return res.status(401).json({
             message: "Missing required field. Required fields: {title, description, user_id}"
         })
     }
 
-    Posts.insertPost(postData)
+    Posts.insertPost({ ...postData, user_id })
         .then(newPost => {
             res.status(201).json(newPost);
         })

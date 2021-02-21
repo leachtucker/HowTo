@@ -58,6 +58,7 @@ router.delete('/', async (req, res) => {
         const { post_id } = req.body;
         const { user_id } = req;
 
+        // Check if the like exists
         const doesExist = await Likes.findByPostUser(post_id, user_id);
 
         if (!doesExist) {
@@ -66,6 +67,7 @@ router.delete('/', async (req, res) => {
             })
         }
 
+        // Delete from DB
         await Likes.del(post_id, user_id);
 
         return res.status(200).json({

@@ -15,12 +15,7 @@ const server = express();
 // MIDDLEWARE //
 server.use(helmet());
 server.use(express.json());
-server.use(cors({
-    "origin": "*",
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-    "preflightContinue": false,
-    "optionsSuccessStatus": 204
-}));
+server.use(cors());
 server.use(authMiddleware());
 
 // ROUTERS //
